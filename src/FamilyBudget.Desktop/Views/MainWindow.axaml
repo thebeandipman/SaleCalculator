@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:FamilyBudget.Desktop.ViewModels"
+        x:Class="FamilyBudget.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="1100"
+        Height="800"
+        Title="Family Budget Planner">
+  <DockPanel Margin="16">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+      <TextBlock VerticalAlignment="Center" Text="Month (yyyy-MM):"/>
+      <TextBox Width="120" Text="{Binding MonthKey}"/>
+      <TextBlock VerticalAlignment="Center" Text="Roll Over:"/>
+      <NumericUpDown Width="140" Increment="50" Value="{Binding RollOver}" FormatString="N2"/>
+      <Button Content="Load / Prime" Command="{Binding LoadCommand}"/>
+      <Button Content="Save" Command="{Binding SaveCommand}"/>
+      <TextBlock VerticalAlignment="Center" Text="{Binding Status}" Margin="12,0,0,0"/>
+    </StackPanel>
+
+    <ScrollViewer>
+      <StackPanel Spacing="12">
+        <ItemsControl ItemsSource="{Binding Sections}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border BorderBrush="#CCC" BorderThickness="1" Padding="10" CornerRadius="6">
+                <StackPanel Spacing="6">
+                  <DockPanel>
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" DockPanel.Dock="Left"/>
+                    <TextBlock Text="{Binding Total, StringFormat='Section Total: {0:N2}'}" DockPanel.Dock="Right"/>
+                  </DockPanel>
+
+                  <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Grid ColumnDefinitions="3*,2*" Margin="0,2">
+                          <TextBox Grid.Column="0" Text="{Binding Name}"/>
+                          <NumericUpDown Grid.Column="1" Value="{Binding Amount}" Increment="25" FormatString="N2"/>
+                        </Grid>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Border BorderBrush="#6A6A6A" BorderThickness="1" Padding="12" CornerRadius="6">
+          <Grid ColumnDefinitions="3*,2*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
+            <TextBlock Grid.Row="0" Text="Summary" FontWeight="Bold" FontSize="17"/>
+
+            <TextBlock Grid.Row="1" Text="Income Total"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding IncomeTotal, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="2" Text="Expenses Total"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ExpenseTotal, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="3" Text="Spending Budgets Total"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SpendingBudgetTotal, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="4" Text="Goals Total"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding GoalTotal, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="5" Text="Adjustments Total"/>
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding AdjustmentTotal, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="6" Text="Available From Income (Roll Over + Income)"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding AvailableFromIncome, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="7" Text="After Expenses"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding AfterExpenses, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="8" Text="After Spending Budgets"/>
+            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding AfterSpendingBudgets, StringFormat={}{0:N2}}" HorizontalAlignment="Right"/>
+
+            <TextBlock Grid.Row="9" Text="Final Remaining" FontWeight="Bold"/>
+            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding FinalRemaining, StringFormat={}{0:N2}}" FontWeight="Bold" HorizontalAlignment="Right"/>
+          </Grid>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</Window>
